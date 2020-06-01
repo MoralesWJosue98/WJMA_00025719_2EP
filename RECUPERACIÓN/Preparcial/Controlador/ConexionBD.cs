@@ -1,0 +1,51 @@
+﻿using System.Data;
+using Npgsql;
+
+namespace Preparcial.Controlador
+{
+    public static class ConexionBD
+    {
+        // Cadena de conexion
+        private static string cadenaC = "Server=127.0.0.1;" +
+                                        "Port=5432;" +
+                                        "UserId=postgres;" +
+                                        "Password=1234;" +
+                                        "Database=preparcial;";
+
+        // Ejecutar consulta (Comando SELECT)
+        public static DataTable EjecutarConsulta(string consulta)
+        {
+            //var conn = new NpgsqlConnection(cadenaC);
+            //Realizar la conexión de tipo NPGSQL
+            NpgsqlConnection conn = new NpgsqlConnection(cadenaC);
+            //var ds = new DataSet();
+            //Variable DataSet para devolver las tablas
+            DataSet ds = new DataSet();
+
+            conn.Open();
+            //var da = new NpgsqlDataAdapter(consulta, conn);
+            //Realizar el DataAdapter tipo Npgsql
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(consulta, conn);
+            da.Fill(ds);
+            conn.Close();
+
+            return ds.Tables[0];
+        }
+
+        // Ejecutar comando (UPDATE, INSERT, DELETE, ETC)
+        public static void EjecutarComando(string comando)
+        {
+            //var conn = new NpgsqlConnection(cadenaC);
+            //Realizar la conexión de tipo NPGSQL
+            NpgsqlConnection conn = new NpgsqlConnection(cadenaC);
+
+            conn.Open();
+            //var comm = new NpgsqlCommand(comando, conn);
+            //Realizar el objeto command de tipo Npgsql
+            NpgsqlCommand comm = new NpgsqlCommand(comando, conn);
+            
+            comm.ExecuteNonQuery();
+            conn.Close();
+        }
+    }
+}
